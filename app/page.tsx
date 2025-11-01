@@ -52,7 +52,8 @@ export default function Page(){
   const [country,setCountry]=useState('Ethiopia');
   const [filters,setFilters]=useState({category:'',admin1:''});
   const [liveData,setLiveData]=useState<any[]|null>(null);
-  const data=liveData||SAMPLE_DATA[country];
+  const data = liveData || SAMPLE_DATA[country as keyof typeof SAMPLE_DATA];
+
 
   useEffect(()=>{const sheetUrl=typeof window!=='undefined'?(window as any).NEXT_PUBLIC_SHEET_URL||'':'';if(sheetUrl){fetch(sheetUrl).then(r=>r.text()).then(t=>setLiveData([])).catch(()=>setLiveData(null));}},[]);
 
