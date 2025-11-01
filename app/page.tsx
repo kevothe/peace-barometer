@@ -31,7 +31,12 @@ const SAMPLE_DATA = {
   ]
 }
 
-function toWeek(dateStr:string){const d=new Date(dateStr);const first=new Date(d.getFullYear(),0,1);const diff=Math.round(((d-first)/86400000+first.getDay())/7);return `${d.getFullYear()}-W${String(diff).padStart(2,'0')}`}
+function toWeek(dateStr: string) {
+  const d = new Date(dateStr);
+  const first = new Date(d.getFullYear(), 0, 1);
+  const diff = Math.round(((d.getTime() - first.getTime()) / 86400000 + first.getDay()) / 7);
+  return `${d.getFullYear()}-W${String(diff).padStart(2, '0')}`;
+}
 function useFiltered(data:any[],filters:any){return React.useMemo(()=>data.filter(ev=>{if(filters.category&&ev.category!==filters.category)return false;if(filters.admin1&&ev.admin1!==filters.admin1)return false;return true;}),[data,filters])}
 function aggregateByWeek(data:any[]){const map=new Map();data.forEach(ev=>{const w=toWeek(ev.date);map.set(w,(map.get(w)||0)+1)});const arr=[...map.entries()].map(([week,count])=>({week,count}));return arr.sort((a,b)=>(a.week>b.week?1:-1))}
 function countByCategory(data:any[]){const counts=CATEGORIES.map(c=>({key:c.key,label:c.label,color:c.color,count:0}));data.forEach(ev=>{const i=counts.findIndex(c=>c.key===ev.category);if(i>=0)counts[i].count+=1});return counts}
